@@ -1,4 +1,6 @@
-State syncing server written in NodeJs to keep state in sync amongst consumers. By default a user has full read allowance but can only patch it's own state.
+> State syncing server written in NodeJs. 
+
+By default a user has full read allowance but can only patch it's own state.
 
 # Usage
 ```js
