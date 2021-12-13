@@ -8,6 +8,6 @@ const socket = io("ws://localhost:9123", { transports: ["websocket"] });
 ```
 
 # Links
-https://stackoverflow.com/questions/10112178/differences-between-socket-io-and-websockets
-https://developer.playcanvas.com/en/tutorials/real-time-multiplayer/
-https://glitch.com/edit/#!/sore-bloom-beech
+- https://stackoverflow.com/questions/10112178/differences-between-socket-io-and-websockets
+- https://developer.playcanvas.com/en/tutorials/real-time-multiplayer/
+- https://glitch.com/edit/#!/sore-bloom-beech
