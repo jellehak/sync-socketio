@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <div id="app">
+        <a href="http://localhost:3000/?name=john" target="_blank">new join</a>
+
+        <pre id="sockets"></pre>
+    </div>
+
+    <script type="module">
+        import { SyncClient } from "./client"
+
+        const players = {}
+
+        const render = () => {
+            // Update UI
+            document.getElementById('sockets').innerHTML = JSON.stringify(players, null, 2)
+        }
+
+        new SyncClient(players, {
+            onChange() {
+                render()
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <div id="app">
+        <a href="http://localhost:3000/?name=john" target="_blank">new join</a>
+
+        <pre id="sockets"></pre>
+    </div>
+
+    <script type="module">
+        import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+
+        const socket = io("ws://localhost:9123", { transports: ["websocket"] });
+
+        // Client state
+        const players = {
+
+        }
+
+        const render = () => {
+            // Update UI
+            document.getElementById('sockets').innerHTML = JSON.stringify(players, null, 2)
+        }
+
+        const mutate = (patch) => {
+            Object.assign(players[patch.id], patch)
+            render()
+        }
+
+        socket.on('init', function (data) {
+            // Clean players ( the hard way to keep it a const )
+            // players = data.players
+            Object.keys(players).forEach(key => {
+                delete players[key];
+            })
+            Object.values(data.players).forEach(player => {
+                players[player.id] = player
+            })
+            render()
+        });
+
+        socket.on('join', function (data) {
+            players[data.id] = {}
+            mutate(data)
+        });
+
+        socket.on('patch', function (data) {
+            mutate(data)
+        });
+
+        socket.on('left', function (data) {
+            delete players[data.id]
+            render()
+        });
+
+        socket.on('warn', function (data) {
+            console.warn(data)
+            if(data.message) alert(data.message)
+        });
+
+        // Boot
+        socket.on("connect", () => {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get("name");
+            socket.emit('patch', {name: name || 'guest', $return: true})
+        })
+    </script>
+</body>
+
+</html>
