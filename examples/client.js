@@ -1,9 +1,20 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 
-export function SyncClient(players = {}, config = {}) {
-    const socket = io("ws://localhost:9123", { transports: ["websocket"] });
+const CONFIG = {
+    onChange: () => { },
+    url: "ws://localhost:9123",
+    players: {}
+}
 
-    const fallback = () => {}
+export function SyncClient(_config = CONFIG) {
+    const config = {
+        ...CONFIG,
+        ..._config,
+    }
+    const {players} = config
+    const socket = io(config.url, { transports: ["websocket"] });
+
+    const fallback = () => { }
     const onChange = config.onChange || fallback
 
     const mutate = (patch) => {
@@ -49,6 +60,7 @@ export function SyncClient(players = {}, config = {}) {
     })
 
     return {
+        config,
         socket
     }
 }

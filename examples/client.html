@@ -21,7 +21,8 @@
             document.getElementById('sockets').innerHTML = JSON.stringify(players, null, 2)
         }
 
-        new SyncClient(players, {
+        new SyncClient({
+            players,
             onChange() {
                 render()
             }
